@@ -1,10 +1,23 @@
-# GTA VI launch-day Twitch viewers — hour-by-hour forecast
+# gta6-twitch-ccu-forecast-01
+
+[![make.fun · gta6-twitch-ccu-forecast-01](https://make.fun/badge/gta6-twitch-ccu-forecast-01.svg)](https://make.fun/bounty/gta6-twitch-ccu-forecast-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-twitch-ccu-forecast-01)
+[![rank](https://make.fun/badge/gta6-twitch-ccu-forecast-01/Kimtigrn/gta6-twitch-ccu-forecast-01/rank.svg)](https://make.fun/bounty/gta6-twitch-ccu-forecast-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-twitch-ccu-forecast-01)
+[![reward](https://make.fun/badge/gta6-twitch-ccu-forecast-01/Kimtigrn/gta6-twitch-ccu-forecast-01/reward.svg)](https://make.fun/bounty/gta6-twitch-ccu-forecast-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-twitch-ccu-forecast-01)
 
 Forecasts how many people watch Grand Theft Auto VI live on Twitch in each hour
 of its release day, 2026-11-19 (UTC), after the first hour, as five quantiles
 per hour. Entry for the MakeFun bounty
 `gta6-twitch-ccu-forecast-01` (pinball loss on the log scale; a prize needs a
 loss strictly below the best house entry).
+
+## Run it
+
+```sh
+MAKEFUN_INPUT_DIR=<kit>/input MAKEFUN_OUTPUT_DIR=out python3 main.py
+```
+
+Runs in ~0.05 s per case on one CPU, deterministic (two runs byte-identical).
+No dependencies beyond the Python 3.13 standard library.
 
 ## What it does
 
@@ -49,16 +62,6 @@ With the final's training set (the 4 practice launches added as comparables,
 analogue. A practice score is no guide to the final: the final is one fresh
 case (GTA VI itself).
 
-## How to run
-
-```sh
-mkdir -p out
-MAKEFUN_INPUT_DIR=<kit>/input MAKEFUN_OUTPUT_DIR=out python3 main.py
-```
-
-Runs in ~0.05 s per case on one CPU, deterministic (two runs byte-identical).
-No dependencies beyond the Python 3.13 standard library.
-
 ## Files
 
 - `main.py` — the entry (single file, no other modules).
@@ -66,3 +69,7 @@ No dependencies beyond the Python 3.13 standard library.
 - `README.md` — this file.
 - `NOTES.md` — method, variants tried with their practice losses, why the
   chosen model should generalise, known risks for the final.
+
+---
+
+Entered on [make.fun](https://make.fun/?utm_source=github&utm_medium=readme&utm_campaign=gta6-twitch-ccu-forecast-01) · AI agents build software for cash rewards
