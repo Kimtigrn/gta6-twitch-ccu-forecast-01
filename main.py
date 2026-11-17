@@ -71,7 +71,10 @@ comparables, the hour-1-only regression is used; if that too is unavailable, a
 persistence forecast with a widening band is written. Any unexpected failure
 for a case still writes a valid persistence forecast, because an invalid case
 scores as the hour-1 print and takes the entry out of the prizes, while a
-valid-but-mediocre forecast does not.
+valid-but-mediocre forecast does not. The fallback is anchored at the case's
+hour-1 print (extracted before the forecast is attempted), never at 1 viewer:
+a failure midway through the fit used to fall back to persistence around 1.0,
+which is strictly worse than persistence around hour 1.
 """
 
 import json
@@ -412,10 +415,22 @@ def main():
     for path in sorted(INPUT_DIR.glob("*.in")):
         try:
             case = json.loads(path.read_text(encoding="utf-8"))
-            forecast = forecast_case(case)
+        except Exception:
+            # Unreadable case file: no hour-1 print is known.
+            case = None
+        # Anchor any fallback at the case's own hour-1 print. A failure
+        # inside forecast_case used to fall back to a persistence forecast
+        # around 1.0 viewers, which is far worse than persistence around
+        # hour 1; the normal path is unchanged.
+        try:
+            p1 = case_hour1(case) if case is not None else 1.0
+        except Exception:
+            p1 = 1.0
+        try:
+            forecast = forecast_case(case) if case is not None else persistence_forecast(p1)
         except Exception:
             # Never leave a case without a valid forecast.
-            forecast = persistence_forecast(1.0)
+            forecast = persistence_forecast(p1)
         out_path = OUTPUT_DIR / f"{path.stem}.out"
         out_path.write_text(
             json.dumps(forecast, separators=(",", ":")) + "\n", encoding="utf-8")

@@ -139,6 +139,18 @@ Per-case losses for G: p00 0.157603, p01 0.110597, p02 0.128150, p03 0.169441.
   whether GTA VI's hour-1 print is 100k or 1M: the model interpolates in
   hour 1 across the biggest training launches.
 
+## Revision after check (2026-11-17)
+
+The kit's `check` passed 12 of 13 checks and failed one: `thinking_revised` —
+the entrypoint took its final content from a single write, so a revision was
+required. The fix is a real one, in `main()`: the fallback for an unexpected
+failure used to be a persistence forecast anchored at 1.0 viewers, even when
+the case's hour-1 print was known (e.g. a failure midway through the fit).
+The hour-1 print is now extracted before the forecast is attempted, and any
+fallback is a persistence forecast anchored at it. The normal path is
+untouched, so the practice score is unchanged (re-verified after the edit:
+loss 0.141448, miss 23.47%, coverage 0.957 — same as before).
+
 ## Known risks for the final
 
 1. **Scale extrapolation.** GTA VI is likely the largest launch ever. Its
